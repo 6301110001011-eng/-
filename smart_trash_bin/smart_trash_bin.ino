@@ -3,7 +3,7 @@
  * อุปกรณ์: Arduino UNO, Ultrasonic HC-SR04, Servo MG996R x 2
  *
  * การต่อสาย
- *   HC-SR04 : VCC -> 5V, GND -> GND, TRIG -> D9, ECHO -> D10
+ *   HC-SR04 : VCC -> D7 (ใช้ขาดิจิทัลจ่ายไฟแทน 5V), GND -> GND, TRIG -> D9, ECHO -> D10
  *   Servo 1 : สีส้ม(สัญญาณ) -> D5, สีแดง -> +5V, สีน้ำตาล -> GND
  *   Servo 2 : สีส้ม(สัญญาณ) -> D6, สีแดง -> +5V, สีน้ำตาล -> GND
  *
@@ -17,6 +17,7 @@
 // ---------- ขาที่ใช้ ----------
 const int TRIG_PIN   = 9;
 const int ECHO_PIN   = 10;
+const int SENSOR_POWER_PIN = 7; // จ่ายไฟให้ HC-SR04 (กินไฟแค่ ~15mA จึงใช้ขาดิจิทัลได้)
 const int SERVO1_PIN = 5;
 const int SERVO2_PIN = 6;
 
@@ -83,6 +84,9 @@ long readDistance() {
 
 void setup() {
   Serial.begin(9600);
+  pinMode(SENSOR_POWER_PIN, OUTPUT);
+  digitalWrite(SENSOR_POWER_PIN, HIGH); // ขา D7 = 5V ให้เซนเซอร์
+  delay(100);
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
 
